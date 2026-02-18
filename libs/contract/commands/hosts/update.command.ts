@@ -81,6 +81,10 @@ export namespace UpdateHostCommand {
         allowInsecure: z.optional(z.boolean()),
         shuffleHost: z.optional(z.boolean()),
         mihomoX25519: z.optional(z.boolean()),
+        realityPbkOverride: z.optional(z.string().nullable()),
+        realitySidOverride: z.optional(z.string().nullable()),
+        flowOverride: z.optional(z.string().nullable()),
+        transportOverride: z.optional(z.string().nullable()),
         nodes: z.optional(z.array(z.string().uuid())),
         xrayJsonTemplateUuid: z.optional(z.string().uuid().nullable()),
         excludedInternalSquads: z

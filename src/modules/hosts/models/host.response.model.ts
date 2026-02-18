@@ -31,6 +31,10 @@ export class HostResponseModel {
 
     public overrideSniFromAddress: boolean;
     public keepSniBlank: boolean;
+    public realityPbkOverride: string | null;
+    public realitySidOverride: string | null;
+    public flowOverride: string | null;
+    public transportOverride: string | null;
     public vlessRouteId: number | null;
 
     public inbound: {
@@ -72,6 +76,10 @@ export class HostResponseModel {
 
         this.overrideSniFromAddress = data.overrideSniFromAddress;
         this.keepSniBlank = data.keepSniBlank;
+        this.realityPbkOverride = data.realityPbkOverride;
+        this.realitySidOverride = data.realitySidOverride;
+        this.flowOverride = data.flowOverride;
+        this.transportOverride = data.transportOverride;
         this.vlessRouteId = data.vlessRouteId;
         this.inbound = {
             configProfileUuid: data.configProfileUuid,

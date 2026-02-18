@@ -184,6 +184,8 @@ export class FormatHostsService {
             const port = inputHost.port;
             let network = inbound.streamSettings?.network || 'tcp';
 
+            const hasTransportOverride = !!inputHost.transportOverride;
+
             let streamSettings:
                 | WebSocketObject
                 | xHttpObject
@@ -277,6 +279,13 @@ export class FormatHostsService {
                     };
 
                     break;
+                }
+            }
+
+            if (hasTransportOverride) {
+                network = inputHost.transportOverride as StreamSettingsObject['network'];
+                if (['tcp', 'raw'].includes(inputHost.transportOverride!)) {
+                    pathFromConfig = '';
                 }
             }
 
@@ -407,10 +416,10 @@ export class FormatHostsService {
             const alpn = inputHost.alpn || alpnFromConfig || '';
 
             // Public key
-            const pbk = publicKeyFromConfig || '';
+            const pbk = inputHost.realityPbkOverride || publicKeyFromConfig || '';
 
             // Short ID
-            const sid = shortIdFromConfig || '';
+            const sid = inputHost.realitySidOverride || shortIdFromConfig || '';
 
             const spiderX = spiderXFromConfig || '';
 
@@ -474,7 +483,9 @@ export class FormatHostsService {
                 dbData,
                 mldsa65Verify: mldsa65PublicKeyFromConfig,
                 encryption: encryptionMap.get(inputHost.inboundTag),
-                flow: getVlessFlow(inbound),
+                flow: inputHost.flowOverride !== undefined && inputHost.flowOverride !== null
+                    ? (inputHost.flowOverride as IFormattedHost['flow'])
+                    : getVlessFlow(inbound),
                 xrayJsonTemplate: inputHost.xrayJsonTemplate,
             });
         }

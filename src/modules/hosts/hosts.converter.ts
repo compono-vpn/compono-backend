@@ -38,6 +38,10 @@ const entityToModel = (entity: HostsEntity): Hosts => {
 
         overrideSniFromAddress: entity.overrideSniFromAddress,
         keepSniBlank: entity.keepSniBlank,
+        realityPbkOverride: entity.realityPbkOverride,
+        realitySidOverride: entity.realitySidOverride,
+        flowOverride: entity.flowOverride,
+        transportOverride: entity.transportOverride,
         configProfileUuid: entity.configProfileUuid,
         configProfileInboundUuid: entity.configProfileInboundUuid,
 

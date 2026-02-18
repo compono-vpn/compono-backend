@@ -26,6 +26,10 @@ export class HostsEntity implements Hosts {
 
     overrideSniFromAddress: boolean;
     keepSniBlank: boolean;
+    realityPbkOverride: string | null;
+    realitySidOverride: string | null;
+    flowOverride: string | null;
+    transportOverride: string | null;
     vlessRouteId: number | null;
     shuffleHost: boolean;
     mihomoX25519: boolean;
