@@ -19,6 +19,8 @@ jobs:
     if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     name: Build and Push to GHCR
     runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.new_tag.outputs.new_tag }}
     permissions:
       contents: write
       packages: write
@@ -66,3 +68,21 @@ jobs:
             ghcr.io/compono-vpn/compono-backend:${{ steps.new_tag.outputs.new_tag }}
             ghcr.io/compono-vpn/compono-backend:${{ steps.get-short.outputs.sha_short }}
             ghcr.io/compono-vpn/compono-backend:latest
+
+  dispatch-update:
+    name: Dispatch Tag to ArgoCD
+    needs: build-and-push
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch tag update
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.GH_PAT }}
+          repository: bdtfs/argocd
+          event-type: image-update
+          client-payload: |
+            {
+              "tag": "${{ needs.build-and-push.outputs.tag }}",
+              "path": "compono-backend"
+            }
