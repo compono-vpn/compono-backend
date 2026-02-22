@@ -14,6 +14,10 @@ on:
         required: true
         default: 'latest'
 
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: compono-vpn/compono-backend
