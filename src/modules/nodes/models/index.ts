@@ -1,6 +1,7 @@
 export * from './base-event.response.model';
 export * from './create-node.response.model';
 export * from './delete-node.response.model';
+export * from './get-actual-users.response.model';
 export * from './get-all-nodes.response.model';
 export * from './get-all-tags.response.model';
 export * from './get-expected-users.response.model';

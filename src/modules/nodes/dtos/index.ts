@@ -2,6 +2,7 @@ export * from './create-node.request.dto';
 export * from './delete-node.dto';
 export * from './disable-node.request.dto';
 export * from './enable-node.request.dto';
+export * from './get-actual-users.dto';
 export * from './get-all-nodes.dto';
 export * from './get-all-tags.dto';
 export * from './get-expected-users.dto';

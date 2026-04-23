@@ -21,6 +21,7 @@ import {
     DeleteNodeCommand,
     DisableNodeCommand,
     EnableNodeCommand,
+    GetActualUsersCommand,
     GetAllNodesCommand,
     GetAllNodesTagsCommand,
     GetExpectedUsersCommand,
@@ -44,6 +45,8 @@ import {
     DisableNodeRequestParamDto,
     DisableNodeResponseDto,
     EnableNodeResponseDto,
+    GetActualUsersRequestParamDto,
+    GetActualUsersResponseDto,
     GetAllNodesResponseDto,
     GetAllNodesTagsResponseDto,
     GetExpectedUsersRequestParamDto,
@@ -65,6 +68,7 @@ import {
 } from './dtos';
 import {
     CreateNodeResponseModel,
+    GetActualUsersResponseModel,
     GetAllNodesResponseModel,
     GetAllNodesTagsResponseModel,
     GetExpectedUsersResponseModel,
@@ -165,6 +169,26 @@ export class NodesController {
         const data = errorHandler(res);
         return {
             response: new GetExpectedUsersResponseModel(uuid.uuid, data),
+        };
+    }
+
+    @ApiOkResponse({
+        type: GetActualUsersResponseDto,
+        description:
+            'Actual usernames currently in xray on this node, union of get-inbound-users across the node active inbound tags (compono-relay-sync observer)',
+    })
+    @ApiParam({ name: 'uuid', type: String, description: 'Node UUID' })
+    @Endpoint({
+        command: GetActualUsersCommand,
+        httpCode: HttpStatus.OK,
+    })
+    async getActualUsers(
+        @Param() uuid: GetActualUsersRequestParamDto,
+    ): Promise<GetActualUsersResponseDto> {
+        const res = await this.nodesService.getActualUsers(uuid.uuid);
+        const data = errorHandler(res);
+        return {
+            response: new GetActualUsersResponseModel(uuid.uuid, data.users, data.unreachableTags),
         };
     }
 
