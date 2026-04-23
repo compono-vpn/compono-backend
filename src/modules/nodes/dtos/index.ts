@@ -4,6 +4,7 @@ export * from './disable-node.request.dto';
 export * from './enable-node.request.dto';
 export * from './get-all-nodes.dto';
 export * from './get-all-tags.dto';
+export * from './get-expected-users.dto';
 export * from './get-one-node.dto';
 export * from './node-bulk-actions.dto';
 export * from './profile-modification.dto';

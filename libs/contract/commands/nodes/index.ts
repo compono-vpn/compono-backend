@@ -3,6 +3,7 @@ export * from './bulk-actions';
 export * from './create.command';
 export * from './delete.command';
 export * from './get-all.command';
+export * from './get-expected-users.command';
 export * from './get-one.command';
 export * from './tags';
 export * from './update.command';

@@ -30,7 +30,7 @@ import {
     DeleteNodeResponseModel,
     RestartNodeResponseModel,
 } from './models';
-import { NodesRepository } from './repositories/nodes.repository';
+import { ExpectedUserRow, NodesRepository } from './repositories/nodes.repository';
 import { NodesEntity } from './entities';
 
 @Injectable()
@@ -481,6 +481,20 @@ export class NodesService {
             }
 
             return ok(new BaseEventResponseModel(true));
+        } catch (error) {
+            this.logger.error(error);
+            return fail(ERRORS.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public async getExpectedUsers(uuid: string): Promise<TResult<ExpectedUserRow[]>> {
+        try {
+            const node = await this.nodesRepository.findByUUID(uuid);
+            if (!node) {
+                return fail(ERRORS.NODE_NOT_FOUND);
+            }
+            const users = await this.nodesRepository.getExpectedUsersForNode(uuid);
+            return ok(users);
         } catch (error) {
             this.logger.error(error);
             return fail(ERRORS.INTERNAL_SERVER_ERROR);

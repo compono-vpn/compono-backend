@@ -23,6 +23,7 @@ import {
     EnableNodeCommand,
     GetAllNodesCommand,
     GetAllNodesTagsCommand,
+    GetExpectedUsersCommand,
     GetOneNodeCommand,
     BulkNodesProfileModificationCommand,
     ReorderNodeCommand,
@@ -45,6 +46,8 @@ import {
     EnableNodeResponseDto,
     GetAllNodesResponseDto,
     GetAllNodesTagsResponseDto,
+    GetExpectedUsersRequestParamDto,
+    GetExpectedUsersResponseDto,
     GetOneNodeRequestParamDto,
     GetOneNodeResponseDto,
     ProfileModificationRequestDto,
@@ -64,6 +67,7 @@ import {
     CreateNodeResponseModel,
     GetAllNodesResponseModel,
     GetAllNodesTagsResponseModel,
+    GetExpectedUsersResponseModel,
     GetOneNodeResponseModel,
 } from './models';
 import { EnableNodeRequestParamDto } from './dtos';
@@ -142,6 +146,25 @@ export class NodesController {
         const data = errorHandler(res);
         return {
             response: new GetOneNodeResponseModel(data),
+        };
+    }
+
+    @ApiOkResponse({
+        type: GetExpectedUsersResponseDto,
+        description: 'Expected user list (panel-side) for this node, as used by compono-relay-sync',
+    })
+    @ApiParam({ name: 'uuid', type: String, description: 'Node UUID' })
+    @Endpoint({
+        command: GetExpectedUsersCommand,
+        httpCode: HttpStatus.OK,
+    })
+    async getExpectedUsers(
+        @Param() uuid: GetExpectedUsersRequestParamDto,
+    ): Promise<GetExpectedUsersResponseDto> {
+        const res = await this.nodesService.getExpectedUsers(uuid.uuid);
+        const data = errorHandler(res);
+        return {
+            response: new GetExpectedUsersResponseModel(uuid.uuid, data),
         };
     }
 
