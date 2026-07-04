@@ -5,6 +5,7 @@ import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 
 import { isDevelopment } from '@common/utils/startup-app/is-development';
+import { isTrustedInternalSource } from '@common/utils/network';
 
 @Injectable()
 export class ProxyCheckGuard implements CanActivate {
@@ -24,7 +25,7 @@ export class ProxyCheckGuard implements CanActivate {
         }
 
         const sourceIp = request.ip || request.socket?.remoteAddress || '';
-        if (sourceIp.startsWith('10.') || sourceIp.startsWith('::ffff:10.')) {
+        if (isTrustedInternalSource(sourceIp)) {
             return true;
         }
 

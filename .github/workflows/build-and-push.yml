@@ -1,11 +1,11 @@
 name: Compono Backend CI/CD
 
-# BDT-398: typecheck + lint + the existing unit test are required gate jobs
+# BDT-398: typecheck + lint + the existing unit tests are required gate jobs
 # in this SAME workflow so a red gate blocks the image build (needs:).
 # Minimal-footprint fork policy: only existing package.json scripts are used
-# (no new test runner/deps added) — `test` runs the single existing
-# reconcile-diff.test.ts via the invocation already documented in that file's
-# header comment (node:test via ts-node, no jest/vitest install needed).
+# (no new test runner/deps added) — `test` runs each *.test.ts file directly
+# via the invocation documented in that file's own header comment (node:test
+# via ts-node, no jest/vitest install needed). BDT-403 added the second one.
 
 on:
   push:
@@ -68,6 +68,7 @@ jobs:
       - run: npm ci
       - run: npm run migrate:generate
       - run: npx ts-node --transpile-only -P tsconfig.json src/modules/nodes/utils/reconcile-diff.test.ts
+      - run: npx ts-node --transpile-only -P tsconfig.json src/common/utils/network/is-trusted-internal-source.test.ts
 
   generate-tag:
     if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'

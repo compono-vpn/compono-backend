@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 
 import { Logger } from '@nestjs/common';
 
+import { isTrustedInternalSource } from '@common/utils/network';
 import { isDevelopment } from '@common/utils/startup-app';
 
 const logger = new Logger('ProxyCheckMiddleware');
@@ -12,7 +13,7 @@ export function proxyCheckMiddleware(req: Request, res: Response, next: NextFunc
     }
 
     const sourceIp = req.ip || req.socket?.remoteAddress || '';
-    if (sourceIp.startsWith('10.') || sourceIp.startsWith('::ffff:10.')) {
+    if (isTrustedInternalSource(sourceIp)) {
         return next();
     }
 
