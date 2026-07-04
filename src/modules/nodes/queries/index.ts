@@ -2,11 +2,11 @@ import { GetEnabledNodesPartialHandler } from './get-enabled-nodes-partial/get-e
 import { FindNodesByCriteriaHandler } from './find-nodes-by-criteria';
 import { GetNodesByCriteriaHandler } from './get-nodes-by-criteria';
 import { CountOnlineUsersHandler } from './count-online-users';
+import { GetExpectedUsersHandler } from './get-expected-users';
 import { GetEnabledNodesHandler } from './get-enabled-nodes';
 import { GetOnlineNodesHandler } from './get-online-nodes';
 import { GetNodeByUuidHandler } from './get-node-by-uuid';
 import { GetAllNodesHandler } from './get-all-nodes';
-import { GetExpectedUsersHandler } from './get-expected-users';
 
 export const QUERIES = [
     GetEnabledNodesHandler,

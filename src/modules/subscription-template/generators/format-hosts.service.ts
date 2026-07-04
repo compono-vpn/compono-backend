@@ -266,7 +266,7 @@ export class FormatHostsService {
 
             if (hasTransportOverride) {
                 network = inputHost.transportOverride as StreamSettingsObject['network'];
-                if (['tcp', 'raw'].includes(inputHost.transportOverride!)) {
+                if (['raw', 'tcp'].includes(inputHost.transportOverride!)) {
                     pathFromConfig = '';
                 }
             }
@@ -465,9 +465,10 @@ export class FormatHostsService {
                 dbData,
                 mldsa65Verify: mldsa65PublicKeyFromConfig,
                 encryption: encryptionMap.get(inputHost.inboundTag),
-                flow: inputHost.flowOverride !== undefined && inputHost.flowOverride !== null
-                    ? (inputHost.flowOverride as IFormattedHost['flow'])
-                    : getVlessFlow(inbound),
+                flow:
+                    inputHost.flowOverride !== undefined && inputHost.flowOverride !== null
+                        ? (inputHost.flowOverride as IFormattedHost['flow'])
+                        : getVlessFlow(inbound),
                 xrayJsonTemplate: inputHost.xrayJsonTemplate,
             });
         }

@@ -24,7 +24,13 @@ export class RemoveUserFromNodeHandler implements IEventHandler<RemoveUserFromNo
             // this event without hydrated fields. Fail-fast here with full
             // context so we can identify the bad caller on the next occurrence,
             // instead of the node silently rejecting the payload.
-            if (event.tId === undefined || event.tId === null || event.vlessUuid === undefined || event.vlessUuid === null || event.vlessUuid === '') {
+            if (
+                event.tId === undefined ||
+                event.tId === null ||
+                event.vlessUuid === undefined ||
+                event.vlessUuid === null ||
+                event.vlessUuid === ''
+            ) {
                 this.logger.error(
                     `BDT-27: RemoveUserFromNodeEvent fired with missing fields — refusing to send. ` +
                         `tId=${String(event.tId)} vlessUuid=${String(event.vlessUuid)}`,

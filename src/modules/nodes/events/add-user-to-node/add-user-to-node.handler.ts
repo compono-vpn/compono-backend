@@ -150,7 +150,9 @@ export class AddUserToNodeHandler implements IEventHandler<AddUserToNodeEvent> {
                         `Possible causes: node.activeInbounds empty, no activeConfigProfileUuid, or no tag overlap ` +
                         `between user squads and node inbounds. User-tags=[${userData.data
                             .map((d) => d.tag)
-                            .join(',')}]. Run docker restart remnawave-node on each exit as a one-shot workaround ` +
+                            .join(
+                                ',',
+                            )}]. Run docker restart remnawave-node on each exit as a one-shot workaround ` +
                         `(reloads from DB), and investigate squad/inbound wiring.`,
                 );
             }

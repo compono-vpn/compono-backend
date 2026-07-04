@@ -1,5 +1,12 @@
 name: Compono Backend CI/CD
 
+# BDT-398: typecheck + lint + the existing unit test are required gate jobs
+# in this SAME workflow so a red gate blocks the image build (needs:).
+# Minimal-footprint fork policy: only existing package.json scripts are used
+# (no new test runner/deps added) — `test` runs the single existing
+# reconcile-diff.test.ts via the invocation already documented in that file's
+# header comment (node:test via ts-node, no jest/vitest install needed).
+
 on:
   push:
     branches:
@@ -23,9 +30,49 @@ env:
   IMAGE_NAME: compono-vpn/compono-backend
 
 jobs:
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm run migrate:generate
+      - run: npx tsc --noEmit -p tsconfig.json
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm run migrate:generate
+      - run: npm run lint
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm run migrate:generate
+      - run: npx ts-node --transpile-only -P tsconfig.json src/modules/nodes/utils/reconcile-diff.test.ts
+
   generate-tag:
     if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     name: Generate Tag
+    needs: [typecheck, lint, test]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -52,7 +99,7 @@ jobs:
 
   build:
     name: Build
-    needs: generate-tag
+    needs: [generate-tag, typecheck, lint, test]
     runs-on: ubuntu-latest
     permissions:
       contents: read
