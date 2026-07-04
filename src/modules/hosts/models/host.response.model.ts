@@ -31,10 +31,12 @@ export class HostResponseModel {
 
     public overrideSniFromAddress: boolean;
     public keepSniBlank: boolean;
+    // --- COMPONO FORK BEGIN (BDT-401, migration 20260218120000_add_reality_overrides) ---
     public realityPbkOverride: string | null;
     public realitySidOverride: string | null;
     public flowOverride: string | null;
     public transportOverride: string | null;
+    // --- COMPONO FORK END ---
     public vlessRouteId: number | null;
 
     public inbound: {
@@ -76,10 +78,12 @@ export class HostResponseModel {
 
         this.overrideSniFromAddress = data.overrideSniFromAddress;
         this.keepSniBlank = data.keepSniBlank;
+        // --- COMPONO FORK BEGIN (BDT-401, migration 20260218120000_add_reality_overrides) ---
         this.realityPbkOverride = data.realityPbkOverride;
         this.realitySidOverride = data.realitySidOverride;
         this.flowOverride = data.flowOverride;
         this.transportOverride = data.transportOverride;
+        // --- COMPONO FORK END ---
         this.vlessRouteId = data.vlessRouteId;
         this.inbound = {
             configProfileUuid: data.configProfileUuid,

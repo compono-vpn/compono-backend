@@ -81,10 +81,12 @@ export namespace UpdateHostCommand {
         allowInsecure: z.optional(z.boolean()),
         shuffleHost: z.optional(z.boolean()),
         mihomoX25519: z.optional(z.boolean()),
+        // --- COMPONO FORK BEGIN (BDT-401, migration 20260218120000_add_reality_overrides) ---
         realityPbkOverride: z.optional(z.string().nullable()),
         realitySidOverride: z.optional(z.string().nullable()),
         flowOverride: z.optional(z.string().nullable()),
         transportOverride: z.optional(z.string().nullable()),
+        // --- COMPONO FORK END ---
         nodes: z.optional(z.array(z.string().uuid())),
         xrayJsonTemplateUuid: z.optional(z.string().uuid().nullable()),
         excludedInternalSquads: z

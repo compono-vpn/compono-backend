@@ -291,10 +291,12 @@ model Hosts {
 
   overrideSniFromAddress Boolean @default(false) @map("override_sni_from_address")
 
+  // --- COMPONO FORK BEGIN (BDT-401, migration 20260218120000_add_reality_overrides) ---
   realityPbkOverride    String? @map("reality_pbk_override")
   realitySidOverride    String? @map("reality_sid_override")
   flowOverride          String? @map("flow_override")
   transportOverride     String? @map("transport_override")
+  // --- COMPONO FORK END ---
 
   configProfileUuid        String? @map("config_profile_uuid") @db.Uuid
   configProfileInboundUuid String? @map("config_profile_inbound_uuid") @db.Uuid

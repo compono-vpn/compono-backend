@@ -38,10 +38,12 @@ const entityToModel = (entity: HostsEntity): Hosts => {
 
         overrideSniFromAddress: entity.overrideSniFromAddress,
         keepSniBlank: entity.keepSniBlank,
+        // --- COMPONO FORK BEGIN (BDT-401, migration 20260218120000_add_reality_overrides) ---
         realityPbkOverride: entity.realityPbkOverride,
         realitySidOverride: entity.realitySidOverride,
         flowOverride: entity.flowOverride,
         transportOverride: entity.transportOverride,
+        // --- COMPONO FORK END ---
         configProfileUuid: entity.configProfileUuid,
         configProfileInboundUuid: entity.configProfileInboundUuid,
 

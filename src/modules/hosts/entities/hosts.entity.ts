@@ -26,10 +26,12 @@ export class HostsEntity implements Hosts {
 
     overrideSniFromAddress: boolean;
     keepSniBlank: boolean;
+    // --- COMPONO FORK BEGIN (BDT-401, migration 20260218120000_add_reality_overrides) ---
     realityPbkOverride: string | null;
     realitySidOverride: string | null;
     flowOverride: string | null;
     transportOverride: string | null;
+    // --- COMPONO FORK END ---
     vlessRouteId: number | null;
     shuffleHost: boolean;
     mihomoX25519: boolean;

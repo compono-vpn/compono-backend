@@ -29,10 +29,12 @@ export const HostsSchema = z.object({
     isHidden: z.boolean().default(false),
     overrideSniFromAddress: z.boolean().default(false),
     keepSniBlank: z.boolean().default(false),
+    // --- COMPONO FORK BEGIN (BDT-401, migration 20260218120000_add_reality_overrides) ---
     realityPbkOverride: z.string().nullable(),
     realitySidOverride: z.string().nullable(),
     flowOverride: z.string().nullable(),
     transportOverride: z.string().nullable(),
+    // --- COMPONO FORK END ---
     vlessRouteId: z.number().int().min(0).max(65535).nullable(),
     allowInsecure: z.boolean().default(false),
     shuffleHost: z.boolean(),
