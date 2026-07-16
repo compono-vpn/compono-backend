@@ -40,6 +40,7 @@ const NETWORK_CONFIGS: Record<
         authority: params.host,
         serviceName: params.path,
     }),
+    hysteria: () => ({}),
 };
 
 @Injectable()
@@ -104,9 +105,25 @@ export class XrayGeneratorService {
                     method: 'chacha20-ietf-poly1305',
                     password: host.password.ssPassword,
                 });
+            case 'hysteria':
+                return this.hysteria2(host);
             default:
                 return undefined;
         }
+    }
+
+    private hysteria2(params: IFormattedHost): string {
+        const query = new URLSearchParams();
+        if (params.sni) query.set('sni', params.sni);
+        if (params.alpn) query.set('alpn', params.alpn);
+        if (params.pinnedPeerCertSha256) {
+            query.set('pinSHA256', params.pinnedPeerCertSha256);
+        }
+
+        const queryString = query.toString();
+        const suffix = queryString ? `?${queryString}` : '';
+        const auth = params.hysteriaAuth || params.password.vlessPassword;
+        return `hysteria2://${encodeURIComponent(auth)}@${params.address}:${params.port}/${suffix}#${encodeURIComponent(params.remark)}`;
     }
 
     private trojan(params: IFormattedHost): string {

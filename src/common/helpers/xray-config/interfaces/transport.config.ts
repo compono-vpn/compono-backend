@@ -108,6 +108,11 @@ export interface KcpObject {
     writeBufferSize?: number;
 }
 
+export interface HysteriaObject {
+    auth?: string;
+    version?: number;
+}
+
 export interface DomainSocketObject {
     abstract?: boolean;
     padding?: boolean;
@@ -115,7 +120,7 @@ export interface DomainSocketObject {
 }
 
 export interface StreamSettingsObject {
-    network: 'raw' | 'xhttp' | 'ws' | 'tcp' | 'httpupgrade' | 'grpc';
+    network: 'raw' | 'xhttp' | 'ws' | 'tcp' | 'httpupgrade' | 'grpc' | 'hysteria';
     security?: 'none' | 'reality' | 'tls';
     tlsSettings?: TLSObject;
     realitySettings?: RealityObject;
@@ -125,6 +130,7 @@ export interface StreamSettingsObject {
     wsSettings?: WebSocketObject;
     httpupgradeSettings?: HttpUpgradeObject;
     grpcSettings?: GrpcObject;
+    hysteriaSettings?: HysteriaObject;
     sockopt?: unknown;
 }
 
@@ -159,4 +165,5 @@ export type OneOfStreamSettingsObject =
     | xHttpObject
     | WebSocketObject
     | HttpUpgradeObject
-    | GrpcObject;
+    | GrpcObject
+    | HysteriaObject;

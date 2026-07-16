@@ -37,6 +37,7 @@ export const HostsSchema = z.object({
     // --- COMPONO FORK END ---
     vlessRouteId: z.number().int().min(0).max(65535).nullable(),
     allowInsecure: z.boolean().default(false),
+    pinnedPeerCertSha256: z.string().nullable(),
     shuffleHost: z.boolean(),
     mihomoX25519: z.boolean(),
 

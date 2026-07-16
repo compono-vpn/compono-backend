@@ -90,10 +90,19 @@ export class AddUserToNodeHandler implements IEventHandler<AddUserToNodeEvent> {
                                 cipherType: CipherType.CHACHA20_POLY1305,
                                 ivCheck: false,
                             };
+                        case 'hysteria':
+                            return {
+                                type: inboundType,
+                                username: tId.toString(),
+                                password: vlessUuid,
+                                tag: inbound.tag,
+                            };
                         default:
                             throw new Error(`Unsupported inbound type: ${inboundType}`);
                     }
-                }),
+                    // Runtime Node 2.8 supports Hysteria2. The backend remains on the
+                    // 2.5 contract package until the wider Remnawave schema upgrade.
+                }) as unknown as AddUserToNodeCommandSdk.Request['data'],
             };
 
             let pushedToAny = false;

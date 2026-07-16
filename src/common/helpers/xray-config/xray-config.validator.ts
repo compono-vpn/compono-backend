@@ -10,6 +10,7 @@ import { UserForConfigEntity } from '@modules/users/entities/users-for-config';
 
 import {
     CertificateObject as Certificate,
+    HysteriaSettings,
     InboundObject as Inbound,
     InboundSettings,
     IXrayConfig,
@@ -85,10 +86,10 @@ export class XRayConfig {
 
             if (
                 network &&
-                !['grpc', 'httpupgrade', 'raw', 'tcp', 'ws', 'xhttp'].includes(network)
+                !['grpc', 'httpupgrade', 'hysteria', 'raw', 'tcp', 'ws', 'xhttp'].includes(network)
             ) {
                 throw new Error(
-                    `Invalid network type "${network}" in inbound "${inbound.tag}". Allowed values are: raw (or tcp), ws, httpupgrade, xhttp and grpc`,
+                    `Invalid network type "${network}" in inbound "${inbound.tag}". Allowed values are: raw (or tcp), ws, httpupgrade, xhttp, grpc and hysteria`,
                 );
             }
 
@@ -96,6 +97,7 @@ export class XRayConfig {
                 ![
                     'dokodemo-door',
                     'http',
+                    'hysteria',
                     'mixed',
                     'shadowsocks',
                     'trojan',
@@ -104,7 +106,7 @@ export class XRayConfig {
                 ].includes(inbound.protocol)
             ) {
                 throw new Error(
-                    `Invalid protocol in inbound "${inbound.tag}". Allowed values are: shadowsocks, trojan, vless, dokodemo-door, http, mixed, wireguard`,
+                    `Invalid protocol in inbound "${inbound.tag}". Allowed values are: hysteria, shadowsocks, trojan, vless, dokodemo-door, http, mixed, wireguard`,
                 );
             }
 
@@ -277,6 +279,9 @@ export class XRayConfig {
                 case 'shadowsocks':
                     (inbound.settings as ShadowsocksSettings).clients = [];
                     break;
+                case 'hysteria':
+                    (inbound.settings as HysteriaSettings).clients = [];
+                    break;
                 default:
                     break;
             }
@@ -333,6 +338,9 @@ export class XRayConfig {
                 case 'shadowsocks':
                     (inbound.settings as ShadowsocksSettings).clients = [];
                     break;
+                case 'hysteria':
+                    (inbound.settings as HysteriaSettings).clients = [];
+                    break;
                 default:
                     break;
             }
@@ -366,6 +374,16 @@ export class XRayConfig {
                     (inbound.settings as ShadowsocksSettings).clients.push({
                         password: user.ssPassword,
                         method: 'chacha20-ietf-poly1305',
+                        email: user.tId.toString(),
+                        id: user.vlessUuid,
+                    });
+                }
+                break;
+            case 'hysteria':
+                (inbound.settings as HysteriaSettings).clients ??= [];
+                for (const user of users) {
+                    (inbound.settings as HysteriaSettings).clients.push({
+                        auth: user.vlessUuid,
                         email: user.tId.toString(),
                         id: user.vlessUuid,
                     });

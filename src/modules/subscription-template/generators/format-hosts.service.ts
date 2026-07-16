@@ -441,6 +441,8 @@ export class FormatHostsService {
                 path,
                 host,
                 tls,
+                hysteriaAuth: protocol === 'hysteria' ? user.vlessUuid : undefined,
+                pinnedPeerCertSha256: inputHost.pinnedPeerCertSha256,
                 sni,
                 alpn,
                 publicKey: pbk,

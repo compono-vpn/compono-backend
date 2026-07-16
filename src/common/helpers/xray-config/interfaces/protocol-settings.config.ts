@@ -54,3 +54,13 @@ export interface VLessUser extends UserObject {
     flow?: 'xtls-rprx-vision' | '';
     id: string;
 }
+
+export interface HysteriaSettings {
+    clients: HysteriaUser[];
+    version?: number;
+}
+
+export interface HysteriaUser extends UserObject {
+    auth: string;
+    id: string;
+}

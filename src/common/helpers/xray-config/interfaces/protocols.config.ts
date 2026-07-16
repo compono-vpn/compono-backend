@@ -1,4 +1,9 @@
-import { ShadowsocksSettings, TrojanSettings, VLessSettings } from './protocol-settings.config';
+import {
+    HysteriaSettings,
+    ShadowsocksSettings,
+    TrojanSettings,
+    VLessSettings,
+} from './protocol-settings.config';
 import { StreamSettingsObject } from './transport.config';
 import { FallbackObject } from './routing.config';
 
@@ -6,14 +11,18 @@ export interface InboundObject {
     allocate?: unknown;
     listen?: string;
     port: number | string | undefined;
-    protocol: 'shadowsocks' | 'trojan' | 'vless';
+    protocol: 'hysteria' | 'shadowsocks' | 'trojan' | 'vless';
     settings?: InboundSettings;
     sniffing?: unknown;
     streamSettings?: StreamSettingsObject;
     tag: string;
 }
 
-export type InboundSettings = ShadowsocksSettings | TrojanSettings | VLessSettings;
+export type InboundSettings =
+    | HysteriaSettings
+    | ShadowsocksSettings
+    | TrojanSettings
+    | VLessSettings;
 
 export interface ShadowsocksInboundSettings {
     email?: string;
