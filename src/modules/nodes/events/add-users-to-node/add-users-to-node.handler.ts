@@ -83,10 +83,14 @@ export class AddUsersToNodeHandler implements IEventHandler<AddUsersToNodeEvent>
                                     };
                                 case 'shadowsocks':
                                     return { type: inbound.type, tag: inbound.tag };
+                                case 'hysteria':
+                                    return { type: inbound.type, tag: inbound.tag };
                                 default:
                                     throw new Error(`Unsupported inbound type: ${inbound.type}`);
                             }
-                        }),
+                            // Runtime Node 2.8 supports Hysteria2. The backend remains on the
+                            // 2.5 contract package until the wider Remnawave schema upgrade.
+                        }) as unknown as AddUsersToNodeCommandSdk.Request['users'][number]['inboundData'],
                     });
                 }
 

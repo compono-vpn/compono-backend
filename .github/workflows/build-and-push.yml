@@ -5,7 +5,7 @@ name: Compono Backend CI/CD
 # Minimal-footprint fork policy: only existing package.json scripts are used
 # (no new test runner/deps added) — `test` runs each *.test.ts file directly
 # via the invocation documented in that file's own header comment (node:test
-# via ts-node, no jest/vitest install needed). BDT-403 added the second one.
+# via ts-node, no jest/vitest install needed).
 
 on:
   push:
@@ -69,6 +69,8 @@ jobs:
       - run: npm run migrate:generate
       - run: npx ts-node --transpile-only -P tsconfig.json src/modules/nodes/utils/reconcile-diff.test.ts
       - run: npx ts-node --transpile-only -P tsconfig.json src/common/utils/network/is-trusted-internal-source.test.ts
+      - run: npx ts-node --transpile-only -P tsconfig.json src/modules/subscription-template/generators/xray.generator.service.test.ts
+      - run: npx ts-node -r tsconfig-paths/register --transpile-only -P tsconfig.json src/common/helpers/xray-config/xray-config.validator.test.ts
 
   generate-tag:
     if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'

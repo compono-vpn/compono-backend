@@ -43,6 +43,10 @@ export namespace CreateHostCommand {
         host: z.string().optional(),
         alpn: z.optional(z.nativeEnum(ALPN).nullable()),
         fingerprint: z.optional(z.nativeEnum(FINGERPRINTS).nullable()),
+        pinnedPeerCertSha256: z
+            .string()
+            .regex(/^[a-fA-F0-9]{64}$/)
+            .nullish(),
         isDisabled: z.optional(z.boolean().default(false)),
         securityLayer: z.optional(z.nativeEnum(SECURITY_LAYERS).default(SECURITY_LAYERS.DEFAULT)),
         xHttpExtraParams: z.optional(z.nullable(z.unknown())),

@@ -22,6 +22,8 @@ export interface IFormattedHost {
     sni: string;
     spiderX: string;
     tls: string;
+    hysteriaAuth?: string;
+    pinnedPeerCertSha256?: string | null;
     additionalParams?: {
         mode?: string;
         heartbeatPeriod?: number;

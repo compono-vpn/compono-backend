@@ -29,9 +29,9 @@ git merge-base main upstream/dev   # should print f4fbccec24fe82a00148c05b95351d
                                     # until the next rebase — see below
 ```
 
-### Every Compono divergence (34 commits ahead of `2.6.1`, oldest first)
+### Every Compono divergence (35 commits ahead of `2.6.1`, oldest first)
 
-#### Schema change — the one invasive patch
+#### Schema changes
 
 | Commit | Date | What |
 |---|---|---|
@@ -65,6 +65,29 @@ overrides into the new control flow.
 `hosts` is co-owned: compono-api hand-maintains its own SQL against the same
 table (see "compono-api Schema Drift Guard" below) — any rename/retype of
 these 4 columns (not just additions) needs a coordinated compono-api change.
+
+The native Hysteria2 backport adds one nullable host column,
+`pinned_peer_cert_sha256` (migration
+`prisma/migrations/20260716190000_add_hysteria_tls_pin`). It carries the
+node-local TLS leaf-certificate fingerprint into generated `hysteria2://`
+links. The migration is additive and passes compono-api's schema-drift guard.
+
+#### Native Hysteria2 compatibility backport
+
+Compono deliberately remains on the 2.6.1 backend schema: a trial rebase onto
+2.8.1 changed 17 columns consumed by compono-api. Instead, the minimal upstream
+Hysteria2 behavior is backported here: config validation and per-user UUID
+authentication, Node add-user/add-users payloads, formatted hosts, and Xray
+Base64 subscription link generation. Hysteria2 and VLESS use the same user and
+internal-squad lifecycle, so Hiddify imports both through the existing
+subscription URL.
+
+The exit-node runtime is pinned separately to Remnawave Node 2.8.0. This
+backend still compiles against `@remnawave/node-contract` 2.5.0; the two narrow
+`unknown` casts in the node user-push handlers bridge the Hysteria2 payloads
+that Node 2.8 accepts but the older package cannot describe. Do not widen
+those casts or upgrade the contract package alone: test the backend/node pair
+on the Admin rollout squad before moving both inbounds to a customer squad.
 
 #### Product / behavior commits
 
@@ -122,17 +145,17 @@ changes into it.
    `.github/workflows/` changed anything Compono's `build-and-push.yml` should
    pick up (e.g. a new required build arg), and port only that, by hand.
 5. Regenerate: `npm run migrate:generate`, `npx prisma validate`, `npx tsc
-   --noEmit`, `npm run lint`, then both `*.test.ts` files (see below).
+   --noEmit`, `npm run lint`, then all four `*.test.ts` files (see below).
 6. Update this file's "Fork basis" section with the new base tag/SHA
    (`git merge-base main upstream/dev` after the rebase) and prepend any new
    divergent commits to the tables above.
 
 ### What must be re-verified after a rebase
 
-- [ ] `npx tsc --noEmit -p tsconfig.json`, `npm run lint`, and both
-      `src/modules/nodes/utils/reconcile-diff.test.ts` and
-      `src/common/utils/network/is-trusted-internal-source.test.ts` pass
-      (CI runs these as required gates per BDT-398/BDT-403).
+- [ ] `npx tsc --noEmit -p tsconfig.json`, `npm run lint`, and the four
+      direct `*.test.ts` invocations in `.github/workflows/build-and-push.yml`
+      pass (CI runs these as required gates per BDT-398/BDT-403 and the native
+      Hysteria2 backport).
 - [ ] `/api/sub/*` still serves a valid subscription for a real user on stage
       before touching prod (this is the money path — 7 domains' worth of
       live VPN client subscription delivery all point at this service).
