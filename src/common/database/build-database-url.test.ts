@@ -1,5 +1,9 @@
-import assert from 'node:assert/strict';
+// Unit tests for the Prisma connection-URL cap helpers (PG1). Run via:
+//   npx ts-node --transpile-only -P tsconfig.json src/common/database/build-database-url.test.ts
+// Uses node:test (ships with node >= 18) — no jest install required.
+
 import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
 
 import {
     DEFAULT_CONNECTION_LIMIT,
@@ -57,7 +61,10 @@ describe('buildDatabaseUrl', () => {
 
 describe('parsePositiveInt', () => {
     it('returns the default when the env var is unset', () => {
-        assert.equal(parsePositiveInt(undefined, DEFAULT_CONNECTION_LIMIT), DEFAULT_CONNECTION_LIMIT);
+        assert.equal(
+            parsePositiveInt(undefined, DEFAULT_CONNECTION_LIMIT),
+            DEFAULT_CONNECTION_LIMIT,
+        );
     });
 
     it('parses a valid positive integer string', () => {
@@ -69,10 +76,16 @@ describe('parsePositiveInt', () => {
     });
 
     it('falls back to the default for zero', () => {
-        assert.equal(parsePositiveInt('0', DEFAULT_POOL_TIMEOUT_SECONDS), DEFAULT_POOL_TIMEOUT_SECONDS);
+        assert.equal(
+            parsePositiveInt('0', DEFAULT_POOL_TIMEOUT_SECONDS),
+            DEFAULT_POOL_TIMEOUT_SECONDS,
+        );
     });
 
     it('falls back to the default for a negative number', () => {
-        assert.equal(parsePositiveInt('-5', DEFAULT_POOL_TIMEOUT_SECONDS), DEFAULT_POOL_TIMEOUT_SECONDS);
+        assert.equal(
+            parsePositiveInt('-5', DEFAULT_POOL_TIMEOUT_SECONDS),
+            DEFAULT_POOL_TIMEOUT_SECONDS,
+        );
     });
 });
