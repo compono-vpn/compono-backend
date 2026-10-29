@@ -1,4 +1,4 @@
-FROM node:24.13-alpine AS backend-build
+FROM node:24.22.2-alpine3.23 AS backend-build
 WORKDIR /opt/app
 
 ENV PRISMA_CLI_BINARY_TARGETS=linux-musl-openssl-3.0.x,linux-musl-arm64-openssl-3.0.x
@@ -20,7 +20,8 @@ RUN npm cache clean --force
 
 RUN npm prune --omit=dev
 
-FROM node:24.13-alpine
+FROM node:24.22.2-alpine3.23
+RUN apk upgrade --no-cache
 WORKDIR /opt/app
 
 ARG GIT_HASH=unknown

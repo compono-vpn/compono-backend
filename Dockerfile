@@ -1,4 +1,4 @@
-FROM alpine:3.19 AS frontend
+FROM alpine:3.22.7 AS frontend
 WORKDIR /opt/frontend
 
 ARG BRANCH=main
@@ -12,7 +12,7 @@ RUN apk add --no-cache curl unzip ca-certificates \
     && curl -L https://validator.remna.dev/xray.schema.cn.json -o frontend_temp/dist/assets/xray.schema.cn.json \
     && curl -L https://validator.remna.dev/main.wasm -o frontend_temp/dist/assets/main.wasm
 
-FROM node:24.13-alpine AS backend-build
+FROM node:24.22.2-alpine3.23 AS backend-build
 WORKDIR /opt/app
 
 # RUN apk add python3 python3-dev build-base pkgconfig libunwind-dev
@@ -37,7 +37,8 @@ RUN npm cache clean --force
 
 RUN npm prune --omit=dev
 
-FROM node:24.13-alpine
+FROM node:24.22.2-alpine3.23
+RUN apk upgrade --no-cache
 WORKDIR /opt/app
 
 ARG BRANCH=main
